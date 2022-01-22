@@ -2,6 +2,7 @@ import path from "path";
 import ForkTsCheckerWebpackPlugin from 'fork-ts-checker-webpack-plugin';
 import { Configuration as WebpackConfiguration } from "webpack";
 import { Configuration as WebpackDevServerConfiguration } from "webpack-dev-server";
+import express from "express";
 
 interface Configuration extends WebpackConfiguration {
     devServer?: WebpackDevServerConfiguration;
@@ -9,6 +10,7 @@ interface Configuration extends WebpackConfiguration {
 
 const config: Configuration = {
     entry: "./src/index.tsx",
+    devtool: 'eval-source-map',
     module: {
         rules: [
             {
@@ -43,6 +45,10 @@ const config: Configuration = {
         static: path.join(__dirname, "build"),
         compress: true,
         port: 4000,
+        setupMiddlewares: (middlewares, devServer) => {
+            devServer.app?.use('/lang/', express.static(path.resolve(__dirname, 'lang')));
+            return middlewares;
+        }
     },
     plugins: [
         new ForkTsCheckerWebpackPlugin({
