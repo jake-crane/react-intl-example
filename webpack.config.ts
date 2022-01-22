@@ -4,6 +4,7 @@ import { Configuration as WebpackConfiguration } from "webpack";
 import { Configuration as WebpackDevServerConfiguration } from "webpack-dev-server";
 import express from "express";
 import TerserPlugin from 'terser-webpack-plugin';
+import CopyPlugin from 'copy-webpack-plugin';
 
 const isProduction = process.argv[process.argv.indexOf('--mode') + 1] === 'production';
 
@@ -37,11 +38,16 @@ const config: Configuration = {
         compress: true,
         port: 4000,
         setupMiddlewares: (middlewares, devServer) => {
-            devServer.app?.use('/lang/', express.static(path.resolve(__dirname, 'lang')));
+            devServer.app?.use('/', express.static(path.resolve(__dirname, 'public')));
             return middlewares;
         }
     },
     plugins: [
+        new CopyPlugin({
+            patterns: [
+                { from: path.join(__dirname, "public"), to: path.join(__dirname, "build") },
+            ],
+        }),
         new ForkTsCheckerWebpackPlugin({
             async: false,
             eslint: {

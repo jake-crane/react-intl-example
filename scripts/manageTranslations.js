@@ -1,13 +1,14 @@
 /* eslint-disable @typescript-eslint/no-var-requires */
 const fs = require('fs');
+const path = require('path');
 
 const supportedLanguages = ['fr-CA', 'es-MX'];
-const langPath = 'lang';
-const enJSONPath = `${langPath}/en.json`;
+const langPath = path.join('public', 'lang');
+const enJSONPath = path.join(langPath, 'en.json');
 
 const enObj = JSON.parse(fs.readFileSync(enJSONPath, 'utf8'));
 for (const currentLang of supportedLanguages) {
-    const currentLangPath = `${langPath}/${currentLang}.json`;
+    const currentLangPath = path.join(langPath, `${currentLang}.json`);
     let newLaneObj = {};
     if (fs.existsSync(currentLangPath)) {
         const currentLangObj = JSON.parse(fs.readFileSync(currentLangPath, 'utf8'))
