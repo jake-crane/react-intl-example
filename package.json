@@ -6,7 +6,8 @@
   "scripts": {
     "start": "run-p webpack-serve watch-langs",
     "webpack-serve": "webpack serve --mode development",
-    "build": "webpack --mode production",
+    "webpack-build": "webpack --mode production",
+    "build": "run-p webpack-build build-langs",
     "extract": "formatjs extract src/**/*.{ts,tsx} --out-file temp.json",
     "compile": "formatjs compile temp.json --out-file lang/en.json",
     "extract-and-compile": "run-s extract compile && rimraf temp.json",
