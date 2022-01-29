@@ -5,6 +5,7 @@ import { Configuration as WebpackDevServerConfiguration } from "webpack-dev-serv
 import express from "express";
 import TerserPlugin from 'terser-webpack-plugin';
 import CopyPlugin from 'copy-webpack-plugin';
+import { CleanWebpackPlugin } from 'clean-webpack-plugin';
 
 const isProduction = process.argv[process.argv.indexOf('--mode') + 1] === 'production';
 
@@ -54,6 +55,7 @@ const config: Configuration = {
                 files: "./src/**/*",
             },
         }),
+        new CleanWebpackPlugin()
     ],
     //Remove bundle.js.LICENSE.txt
     optimization: {
